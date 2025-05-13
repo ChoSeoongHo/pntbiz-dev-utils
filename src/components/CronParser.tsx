@@ -23,32 +23,44 @@ import useDebounce from "@/hooks/useDebounce";
 import { koreanLocale } from "@/i18n/cron-ko.ts";
 
 const CronParser = () => {
-  const [cronExpression, setcronExpression] = useState("0 */5 * * * *");
-  const [mode, setMode] = useState<"raw" | "visual">("raw");
+  const [cronExpression, setCronExpression] = useState("0 */5 * * * *");
   const debouncedCronExpression = useDebounce(cronExpression);
+  const [mode, setMode] = useState<"raw" | "visual">("raw");
   const [parsedTimes, setParsedTimes] = useState<string[]>([]);
   const [humanText, setHumanText] = useState("");
   const [error, setError] = useState("");
   const [viewType, setViewType] = useState<"next" | "prev">("next");
 
+  const handleCronChange = (val: string) => {
+    const parts = val.trim().split(" ");
+    if (parts.length === 5) {
+      setCronExpression(`0 ${val}`);
+    } else {
+      setCronExpression(val);
+    }
+  };
+
   useEffect(() => {
     const trimedCron = debouncedCronExpression.trim();
-    if (trimedCron.split(" ").length < 5) {
+    const segments = trimedCron.split(" ");
+    if (segments.length < 5) {
       setError("입력을 완료해주세요.");
       setParsedTimes([]);
       setHumanText("");
       return;
     }
+    const paddedCron = segments.length === 5 ? `0 ${trimedCron}` : trimedCron;
+    console.log(paddedCron);
     try {
-      const cron = parser.parse(trimedCron, { strict: false });
-      const times = [];
+      const cron = parser.parse(paddedCron, { strict: false });
+      const times: string[] = [];
       for (let i = 0; i < 5; i++) {
         times.push(
           viewType === "prev" ? cron.prev().toString() : cron.next().toString(),
         );
       }
       setParsedTimes(viewType === "prev" ? [...times].reverse() : times);
-      setHumanText(cronstrue.toString(trimedCron, { locale: "ko" }));
+      setHumanText(cronstrue.toString(paddedCron, { locale: "ko" }));
       setError("");
     } catch (err: unknown) {
       console.error(err);
@@ -79,7 +91,7 @@ const CronParser = () => {
             <TextField
               label="Cron 표현식"
               value={cronExpression}
-              onChange={(e) => setcronExpression(e.target.value)}
+              onChange={(e) => setCronExpression(e.target.value)}
               fullWidth
               error={!!error}
               helperText={error}
@@ -87,7 +99,7 @@ const CronParser = () => {
           ) : (
             <Cron
               value={cronExpression}
-              setValue={setcronExpression}
+              setValue={handleCronChange}
               locale={koreanLocale}
               shortcuts={["@monthly", "@daily", "@hourly"]}
             />
