@@ -3,6 +3,12 @@ name: Deploy GitHub Pages
 on:
   push:
     branches: ['main']
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'vite.config.*'
+      - 'package.json'
+      - 'yarn.lock'
   workflow_dispatch:
 
 permissions:
