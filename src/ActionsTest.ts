@@ -1,1 +1,0 @@
-const test = "This is GitHub Actions Test";
