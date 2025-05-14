@@ -11,6 +11,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  useTheme,
 } from "@mui/material";
 import parser from "cron-parser";
 import cronstrue from "cronstrue";
@@ -20,9 +21,11 @@ import "react-js-cron/dist/styles.css";
 import "antd/dist/reset.css";
 import { formatDate } from "@/utils/time";
 import useDebounce from "@/hooks/useDebounce";
+import useClipboard from "@/hooks/useClipboard";
 import { koreanLocale } from "@/i18n/cron-ko.ts";
 
 const CronParser = () => {
+  const theme = useTheme();
   const [cronExpression, setCronExpression] = useState("0 */5 * * * *");
   const debouncedCronExpression = useDebounce(cronExpression);
   const [mode, setMode] = useState<"raw" | "visual">("raw");
@@ -30,6 +33,7 @@ const CronParser = () => {
   const [humanText, setHumanText] = useState("");
   const [error, setError] = useState("");
   const [viewType, setViewType] = useState<"next" | "prev">("next");
+  const { copy, renderSnackbar } = useClipboard();
 
   const handleCronChange = (val: string) => {
     const parts = val.trim().split(" ");
@@ -112,11 +116,41 @@ const CronParser = () => {
                   결과: {humanText}
                 </Typography>
               ) : (
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    표현식: {cronExpression}
+                <Box mt={3}>
+                  <Typography variant="subtitle1" gutterBottom>
+                    표현식({humanText})
                   </Typography>
-                  <Typography variant="body1">결과: {humanText}</Typography>
+
+                  <Box
+                    onClick={() => copy(cronExpression)}
+                    sx={{
+                      mx: "auto",
+                      backgroundColor: theme.palette.secondary.main,
+                      padding: 2,
+                      borderRadius: 1,
+                      textAlign: "center",
+                      mb: 2,
+                      cursor: "pointer",
+                      transition: "background-color 0.3s",
+                      userSelect: "none",
+                      width: "fit-content",
+                      maxWidth: "100%",
+                      "&:hover": {
+                        backgroundColor: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontFamily: "monospace",
+                        mr: 1,
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {cronExpression}
+                    </Typography>
+                  </Box>
                 </Box>
               )}
             </Box>
@@ -150,6 +184,7 @@ const CronParser = () => {
           )}
         </CardContent>
       </Card>
+      {renderSnackbar()}
     </Box>
   );
 };
