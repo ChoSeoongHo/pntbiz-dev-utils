@@ -20,7 +20,10 @@ type Action =
   | { type: "ADD"; payload: Todo }
   | { type: "DELETE"; payload: string }
   | { type: "TOGGLE"; payload: string }
-  | { type: "EDIT"; payload: { id: string; text: string } }
+  | {
+      type: "EDIT";
+      payload: { id: string; text: string; deadline: Dayjs | null };
+    }
   | { type: "SET"; payload: Todo[] };
 
 const TodoContext = createContext<Todo[] | undefined>(undefined);
@@ -47,7 +50,11 @@ function todoReducer(state: Todo[], action: Action): Todo[] {
     case "EDIT":
       return state.map((todo) =>
         todo.id === action.payload.id
-          ? { ...todo, text: action.payload.text }
+          ? {
+              ...todo,
+              text: action.payload.text,
+              deadline: action.payload.deadline ?? todo.deadline,
+            }
           : todo,
       );
     case "SET":

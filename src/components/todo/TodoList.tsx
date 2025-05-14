@@ -35,6 +35,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
 import { useTodos, useTodoDispatch } from "@/components/todo/TodoContext.tsx";
+import useModal from "@/hooks/useModal.tsx";
 
 type DeadlineType = "none" | "date" | "datetime" | "time";
 
@@ -42,6 +43,9 @@ const TodoList = () => {
   const theme = useTheme();
   const todos = useTodos();
   const dispatch = useTodoDispatch();
+  const { showModal, renderModal } = useModal({
+    content: "이 할 일을 삭제하시겠어요?",
+  });
   const { copy, renderSnackbar } = useClipboard();
 
   const [input, setInput] = useState("");
@@ -77,13 +81,27 @@ const TodoList = () => {
   };
 
   const deleteTodo = (id: string) => {
-    dispatch({ type: "DELETE", payload: id });
+    const todo = todos.find((t) => t.id === id);
+    if (!todo) {
+      return;
+    }
+
+    if (todo.done) {
+      dispatch({ type: "DELETE", payload: id });
+    } else {
+      showModal(() => dispatch({ type: "DELETE", payload: id }));
+    }
   };
 
   const saveEdit = (id: string, newText: string) => {
-    dispatch({ type: "EDIT", payload: { id, text: newText } });
+    dispatch({
+      type: "EDIT",
+      payload: { id, text: newText, deadline: deadline },
+    });
     setEditId(null);
     setInput("");
+    setDeadline(null);
+    setDeadlineType("none");
   };
 
   const handleCopy = (text: string) => {
@@ -234,6 +252,7 @@ const TodoList = () => {
           </Alert>
         </Snackbar>
       </Box>
+      {renderModal()}
     </LocalizationProvider>
   );
 };
