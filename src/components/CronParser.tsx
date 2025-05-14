@@ -26,14 +26,14 @@ import { koreanLocale } from "@/i18n/cron-ko.ts";
 
 const CronParser = () => {
   const theme = useTheme();
-  const [cronExpression, setCronExpression] = useState("0 */5 * * * *");
+  const { copy, renderSnackbar } = useClipboard();
+  const [cronExpression, setCronExpression] = useState("0 * * * * *");
   const debouncedCronExpression = useDebounce(cronExpression);
   const [mode, setMode] = useState<"raw" | "visual">("raw");
   const [parsedTimes, setParsedTimes] = useState<string[]>([]);
   const [humanText, setHumanText] = useState("");
   const [error, setError] = useState("");
   const [viewType, setViewType] = useState<"next" | "prev">("next");
-  const { copy, renderSnackbar } = useClipboard();
 
   const handleCronChange = (val: string) => {
     const parts = val.trim().split(" ");
