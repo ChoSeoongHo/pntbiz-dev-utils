@@ -23,6 +23,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import useAppTheme from "@/styles/useAppTheme.ts";
 import TodoList from "@/components/todo/TodoList.tsx";
 import { TodoProvider } from "@/components/todo/TodoContext.tsx";
+import AppVersion from "@/components/AppVersion.tsx";
 
 const tools = [
   {
@@ -88,7 +89,7 @@ const App = () => {
         }}
       >
         {renderToolComponent()}
-
+        <AppVersion />
         <Tooltip title={mode === "dark" ? "Light Mode" : "Dark Mode"}>
           <IconButton
             onClick={toggleTheme}
