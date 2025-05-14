@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Snackbar, Alert } from "@mui/material";
 
-interface Options {
+interface ClipboardOptions {
   message?: string;
   duration?: number;
 }
 
-const useClipboard = (options?: Options) => {
+const useClipboard = (options?: ClipboardOptions) => {
   const { message = "복사 완료! ✅", duration = 1500 } = options || {};
   const [copied, setCopied] = useState(false);
 

@@ -65,7 +65,10 @@ const tools = [
 
 const App = () => {
   const { theme, mode, toggleTheme } = useAppTheme();
+  const [open, setOpen] = useState(false);
   const [selectedToolKey, setSelectedToolKey] = useState("todo");
+
+  const handleToggle = () => setOpen((prev) => !prev);
 
   const renderToolComponent = () => {
     const selectedTool =
@@ -98,14 +101,16 @@ const App = () => {
             }}
           >
             {mode === "dark" ? (
-              <LightModeIcon sx={{ fontSize: 28 }} />
+              <LightModeIcon sx={{ fontSize: 32 }} />
             ) : (
-              <DarkModeIcon sx={{ fontSize: 28 }} />
+              <DarkModeIcon sx={{ fontSize: 32 }} />
             )}
           </IconButton>
         </Tooltip>
         <SpeedDial
-          ariaLabel="Dev Tool Selector"
+          ariaLabel="Utilities"
+          open={open}
+          onClick={handleToggle}
           sx={{ position: "fixed", bottom: 32, right: 32 }}
           icon={<WidgetsIcon />}
         >
