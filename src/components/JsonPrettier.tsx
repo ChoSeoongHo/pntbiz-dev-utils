@@ -7,12 +7,15 @@ import {
   TextField,
   Typography,
   IconButton,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import useClipboard from "@/hooks/useClipboard.tsx";
-import useDebounce from "@/hooks/useDebounce.ts";
+import useClipboard from "@/hooks/useClipboard";
+import useDebounce from "@/hooks/useDebounce";
+import { generateHtmlTable } from "@/utils/htmlSpecConverter";
 
 const fixJsonInput = (input: string): string =>
   input.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3');
@@ -20,7 +23,9 @@ const fixJsonInput = (input: string): string =>
 const JsonPrettier = () => {
   const [input, setInput] = useState('{"hello":"world!"}');
   const debouncedInput = useDebounce(input, 1000);
+  const [viewMode, setViewMode] = useState<"pretty" | "spec">("pretty");
   const [formatted, setFormatted] = useState("");
+  const [htmlSpec, setHtmlSpec] = useState("");
   const { copy, renderSnackbar } = useClipboard();
   const [error, setError] = useState("");
 
@@ -34,6 +39,7 @@ const JsonPrettier = () => {
       const json = JSON.parse(fixed);
       const pretty = JSON.stringify(json, null, 2);
       setFormatted(pretty);
+      setHtmlSpec(generateHtmlTable(json));
       setError("");
     } catch (err) {
       console.error(err);
@@ -64,13 +70,23 @@ const JsonPrettier = () => {
               },
             }}
           />
+          <Tabs
+            value={viewMode}
+            onChange={(_, newVal) => setViewMode(newVal)}
+            textColor="primary"
+            indicatorColor="primary"
+            variant="fullWidth"
+            sx={{ mt: 3 }}
+          >
+            <Tab label="Prettier" value="pretty" />
+            <Tab label="HTML Spec" value="spec" />
+          </Tabs>
 
-          {formatted && (
+          {viewMode === "pretty" && formatted && (
             <Box mt={3} position="relative">
               <Typography variant="subtitle1" gutterBottom>
                 결과
               </Typography>
-
               <Box position="relative">
                 <SyntaxHighlighter
                   language="json"
@@ -88,9 +104,46 @@ const JsonPrettier = () => {
                 >
                   {formatted}
                 </SyntaxHighlighter>
-
                 <IconButton
                   onClick={() => copy(formatted)}
+                  size="small"
+                  sx={{
+                    position: "absolute",
+                    top: 16,
+                    right: 32,
+                    color: "white",
+                  }}
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Box>
+          )}
+
+          {viewMode === "spec" && htmlSpec && (
+            <Box mt={3} position="relative">
+              <Typography variant="subtitle1" gutterBottom>
+                명세 (HTML Table)
+              </Typography>
+              <Box position="relative">
+                <SyntaxHighlighter
+                  language="html"
+                  style={vscDarkPlus}
+                  customStyle={{
+                    borderRadius: 8,
+                    padding: 16,
+                    fontSize: "0.875rem",
+                    backgroundColor: "#1e1e1e",
+                    maxHeight: 400,
+                    overflow: "auto",
+                  }}
+                  wrapLongLines
+                  wrapLines
+                >
+                  {htmlSpec}
+                </SyntaxHighlighter>
+                <IconButton
+                  onClick={() => copy(htmlSpec)}
                   size="small"
                   sx={{
                     position: "absolute",
