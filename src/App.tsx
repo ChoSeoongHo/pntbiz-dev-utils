@@ -24,6 +24,7 @@ import useAppTheme from "@/styles/useAppTheme";
 import TodoList from "@/components/todo/TodoList";
 import { TodoProvider } from "@/components/todo/TodoContext";
 import AppVersion from "@/components/AppVersion";
+import useLocalStorage from "@/hooks/useLocalStorage.ts";
 
 const tools = [
   {
@@ -66,8 +67,11 @@ const tools = [
 
 const App = () => {
   const { theme, mode, toggleTheme } = useAppTheme();
+  const [selectedToolKey, setSelectedToolKey] = useLocalStorage(
+    "selectedToolKey",
+    "todo",
+  );
   const [open, setOpen] = useState(false);
-  const [selectedToolKey, setSelectedToolKey] = useState("todo");
 
   const handleToggle = () => setOpen((prev) => !prev);
 
