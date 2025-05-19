@@ -34,8 +34,8 @@ import {
 } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Dayjs } from "dayjs";
-import { useTodos, useTodoDispatch } from "@/components/todo/TodoContext.tsx";
-import useModal from "@/hooks/useModal.tsx";
+import { useTodos, useTodoDispatch } from "@/components/todo/TodoContext";
+import useModal from "@/hooks/useModal";
 
 type DeadlineType = "none" | "date" | "datetime" | "time";
 

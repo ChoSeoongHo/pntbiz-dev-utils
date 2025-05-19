@@ -16,13 +16,13 @@ import {
 import parser from "cron-parser";
 import cronstrue from "cronstrue";
 import "cronstrue/locales/ko";
+import { koreanLocale } from "@/i18n/cron-ko";
 import { Cron } from "react-js-cron";
 import "react-js-cron/dist/styles.css";
 import "antd/dist/reset.css";
 import { formatDate } from "@/utils/time";
 import useDebounce from "@/hooks/useDebounce";
 import useClipboard from "@/hooks/useClipboard";
-import { koreanLocale } from "@/i18n/cron-ko.ts";
 
 const CronParser = () => {
   const theme = useTheme();

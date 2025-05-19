@@ -15,15 +15,15 @@ import CodeIcon from "@mui/icons-material/Code";
 import LanguageIcon from "@mui/icons-material/Language";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import EpochConverter from "@/components/EpochConverter.tsx";
-import CronParser from "@/components/CronParser.tsx";
-import JsonPrettier from "@/components/JsonPrettier.tsx";
-import UrlEncoder from "@/components/UrlEncoder.tsx";
+import EpochConverter from "@/components/EpochConverter";
+import CronParser from "@/components/CronParser";
+import JsonPrettier from "@/components/JsonPrettier";
+import UrlEncoder from "@/components/UrlEncoder";
 import { ThemeProvider } from "@mui/material/styles";
-import useAppTheme from "@/styles/useAppTheme.ts";
-import TodoList from "@/components/todo/TodoList.tsx";
-import { TodoProvider } from "@/components/todo/TodoContext.tsx";
-import AppVersion from "@/components/AppVersion.tsx";
+import useAppTheme from "@/styles/useAppTheme";
+import TodoList from "@/components/todo/TodoList";
+import { TodoProvider } from "@/components/todo/TodoContext";
+import AppVersion from "@/components/AppVersion";
 
 const tools = [
   {

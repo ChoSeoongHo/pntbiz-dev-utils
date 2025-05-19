@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { Dayjs } from "dayjs";
-import useLocalStorage from "@/hooks/useLocalStorage.ts";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import dayjs from "dayjs";
 
 export interface Todo {
