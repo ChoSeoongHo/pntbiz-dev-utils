@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { DateFormatType, formatDate } from "@/utils/time";
+import ResponsiveDebugger from "@/layout/ResponsiveDebugger";
 
 const AppVersion = () => {
   return (
@@ -12,7 +13,7 @@ const AppVersion = () => {
         color: "text.secondary",
       }}
     >
-      v{__APP_VERSION__} (
+      <ResponsiveDebugger />v{__APP_VERSION__} (
       {formatDate(new Date(__BUILD_DATE__), DateFormatType.HYPHENATED)})
     </Box>
   );
