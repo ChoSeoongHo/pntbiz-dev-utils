@@ -1,4 +1,6 @@
-export const koreanLocale = {
+import {Locale} from "react-js-cron";
+
+export const koreanLocale: Locale = {
   everyText: "매",
   emptyMonths: "매월",
   emptyMonthDays: "매일",
