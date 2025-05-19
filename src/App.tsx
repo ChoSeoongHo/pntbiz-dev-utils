@@ -20,11 +20,11 @@ import CronParser from "@/components/CronParser";
 import JsonPrettier from "@/components/JsonPrettier";
 import UrlEncoder from "@/components/UrlEncoder";
 import { ThemeProvider } from "@mui/material/styles";
-import useAppTheme from "@/styles/useAppTheme";
 import TodoList from "@/components/todo/TodoList";
 import { TodoProvider } from "@/components/todo/TodoContext";
 import AppVersion from "@/components/AppVersion";
-import useLocalStorage from "@/hooks/useLocalStorage.ts";
+import useAppTheme from "@/styles/useAppTheme";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const tools = [
   {
@@ -99,10 +99,11 @@ const App = () => {
             onClick={toggleTheme}
             sx={{
               position: "fixed",
-              bottom: 32,
-              right: 100,
-              width: 56,
-              height: 56,
+              bottom: { xs: 16, sm: 24, md: 32 },
+              right: { xs: 80, sm: 100 },
+              width: { xs: 48, sm: 56 },
+              height: { xs: 48, sm: 56 },
+              zIndex: 1301,
             }}
           >
             {mode === "dark" ? (
@@ -116,8 +117,13 @@ const App = () => {
           ariaLabel="Utilities"
           open={open}
           onClick={handleToggle}
-          sx={{ position: "fixed", bottom: 32, right: 32 }}
-          icon={<WidgetsIcon />}
+          sx={{
+            position: "fixed",
+            bottom: { xs: 16, sm: 24, md: 32 },
+            right: { xs: 16, sm: 24, md: 32 },
+            zIndex: 1300,
+          }}
+          icon={<WidgetsIcon sx={{ fontSize: { xs: 24, sm: 32 } }} />}
         >
           {tools.map((tool) => (
             <SpeedDialAction

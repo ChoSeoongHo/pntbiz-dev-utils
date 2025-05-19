@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -9,7 +10,6 @@ import {
   Stack,
   TextField,
   Typography,
-  Alert,
   useTheme,
 } from "@mui/material";
 import { formatDate, formatEpochToDate } from "@/utils/time";
@@ -49,9 +49,22 @@ const EpochConverter = () => {
   };
 
   return (
-    <Box sx={{ padding: 4, display: "flex", justifyContent: "center" }}>
+    <Box
+      sx={{
+        px: { xs: 2, sm: 4 },
+        py: { xs: 2, sm: 4 },
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       <Card
-        sx={{ minWidth: 600, maxWidth: 600, minHeight: 350, width: "100%" }}
+        sx={{
+          width: "100%",
+          minWidth: { xs: 300, sm: 400, md: 600 },
+          maxWidth: { xs: "100%", sm: 600, md: 800, lg: 1000 },
+          minHeight: { xs: 0, sm: 300 },
+          mx: "auto",
+        }}
       >
         <CardHeader title="Epoch Converter" />
         <CardContent>
