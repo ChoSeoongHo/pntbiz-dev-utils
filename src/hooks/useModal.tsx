@@ -23,7 +23,7 @@ interface UseModalOptions {
 const useModal = (options?: UseModalOptions) => {
   const {
     title = "확인해주세요!",
-    content = "이 작업을 진행하시겠습니까?",
+    content = "이 작업을 진행하시겠어요?",
     confirmText = "확인",
     cancelText = "취소",
   } = options || {};
